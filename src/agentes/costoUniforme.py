@@ -1,4 +1,4 @@
-from utils import PriorityQueue, state2Tuple, tuple2State
+from ..utils import PriorityQueue, state2Tuple, tuple2State
 
 def uniformCostSearch(problem):
     frontera = PriorityQueue()
@@ -30,7 +30,7 @@ def uniformCostSearch(problem):
             sucesorT = state2Tuple(sucesor)
             if sucesorT not in visitados:
                 costoTotal = costos[nodoT] + costo
-                if (sucesorT not in costos) or (costoTotal < costos[sucesor]):
+                if (sucesorT not in costos) or (costoTotal < costos[sucesorT]):
                     frontera.push(sucesorT, costoTotal)
                     padres[sucesorT] = nodoT
                     acciones[sucesorT] = acciones[nodoT] + [accion]

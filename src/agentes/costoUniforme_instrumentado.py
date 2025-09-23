@@ -1,4 +1,4 @@
-from utils import PriorityQueue, state2Tuple, tuple2State
+from ..utils import PriorityQueue, state2Tuple, tuple2State
 
 def uniformCostSearchInstrumentado(problem):
     """

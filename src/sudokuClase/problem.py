@@ -1,6 +1,5 @@
 class SudokuProblem:
-    def __init__(self, heuristic, startState=None):
-        self.heuristic = heuristic
+    def __init__(self, startState=None):
         self.startState = startState
         
     def getInitialState(self):

@@ -1,4 +1,4 @@
-from utils import PriorityQueue, state2Tuple, tuple2State
+from ..utils import PriorityQueue, state2Tuple, tuple2State
 
 def aStarSearchInstrumentado(problem, heuristic):
     """
@@ -25,11 +25,11 @@ def aStarSearchInstrumentado(problem, heuristic):
     stats['tiempo_inicio'] = time.time()
 
     estadoInicial = problem.getInitialState()
-    estadoInicial_tuple = state2Tuple(estadoInicial)
-    frontera.push(estadoInicial_tuple, heuristic(estadoInicial,problem))
-    padres[estadoInicial_tuple] = None
-    acciones[estadoInicial_tuple] = []
-    costos[estadoInicial_tuple] = 0
+    estadoInicialT = state2Tuple(estadoInicial)
+    frontera.push(estadoInicialT, heuristic(estadoInicial,problem))
+    padres[estadoInicialT] = None
+    acciones[estadoInicialT] = []
+    costos[estadoInicialT] = 0
     stats['nodos_generados'] = 1
     
     while frontera.isEmpty()!=True:
@@ -37,37 +37,37 @@ def aStarSearchInstrumentado(problem, heuristic):
         if len(frontera.heap) > stats['nodos_en_frontera_max']:
             stats['nodos_en_frontera_max'] = len(frontera.heap)
             
-        nodo_tuple = frontera.pop()
-        if nodo_tuple in visitados:
+        nodoT = frontera.pop()
+        if nodoT in visitados:
             continue
-        visitados.add(nodo_tuple)
+        visitados.add(nodoT)
         stats['nodos_expandidos'] += 1
         
         # Convertir nodo de vuelta a lista para las operaciones del problema
-        nodo = tuple2State(nodo_tuple)
+        nodo = tuple2State(nodoT)
         
         # Calcular profundidad actual
-        profundidad_actual = len(acciones[nodo_tuple])
+        profundidad_actual = len(acciones[nodoT])
         if profundidad_actual > stats['profundidad_maxima']:
             stats['profundidad_maxima'] = profundidad_actual
         
         if problem.isGoalState(nodo):
-            stats['costo_solucion'] = costos[nodo_tuple]
+            stats['costo_solucion'] = costos[nodoT]
             stats['tiempo_fin'] = time.time()
-            return acciones[nodo_tuple], stats
+            return acciones[nodoT], stats
         
         sucesores = problem.getSuccessors(nodo)
         for sucesor, accion, costo in sucesores:
-            sucesor_tuple = state2Tuple(sucesor)
+            sucesorT = state2Tuple(sucesor)
             stats['nodos_generados'] += 1
             
-            if sucesor_tuple not in visitados:
-                costoTotal = costos[nodo_tuple] + costo
-                if (sucesor_tuple not in costos) or (costoTotal < costos[sucesor_tuple]):
-                    frontera.push(sucesor_tuple, costoTotal + heuristic(sucesor,problem))
-                    padres[sucesor_tuple] = nodo_tuple
-                    acciones[sucesor_tuple] = acciones[nodo_tuple] + [accion]
-                    costos[sucesor_tuple] = costoTotal
+            if sucesorT not in visitados:
+                costoTotal = costos[nodoT] + costo
+                if (sucesorT not in costos) or (costoTotal < costos[sucesorT]):
+                    frontera.push(sucesorT, costoTotal + heuristic(sucesor,problem))
+                    padres[sucesorT] = nodoT
+                    acciones[sucesorT] = acciones[nodoT] + [accion]
+                    costos[sucesorT] = costoTotal
     
     stats['tiempo_fin'] = time.time()
     return [], stats
