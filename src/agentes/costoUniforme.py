@@ -1,6 +1,6 @@
 from utils import PriorityQueue, state2Tuple, tuple2State
 
-def aStarSearch(problem, heuristic):
+def uniformCostSearch(problem):
     frontera = PriorityQueue()
     visitados = set()
     padres = {}
@@ -9,10 +9,10 @@ def aStarSearch(problem, heuristic):
 
     estadoInicial = problem.getInitialState()
     estadoInicialT = state2Tuple(estadoInicial)
-    frontera.push(estadoInicialT, heuristic(estadoInicial,problem))
+    frontera.push(estadoInicialT, 0)
     padres[estadoInicialT] = None
     acciones[estadoInicialT] = []
-    costos[estadoInicialT] = 0
+    costos[estadoInicialT] = 0 
     
     while frontera.isEmpty()!=True:
         nodoT = frontera.pop()
@@ -30,8 +30,8 @@ def aStarSearch(problem, heuristic):
             sucesorT = state2Tuple(sucesor)
             if sucesorT not in visitados:
                 costoTotal = costos[nodoT] + costo
-                if (sucesorT not in costos) or (costoTotal < costos[sucesorT]):
-                    frontera.push(sucesorT, costoTotal + heuristic(sucesor,problem))
+                if (sucesorT not in costos) or (costoTotal < costos[sucesor]):
+                    frontera.push(sucesorT, costoTotal)
                     padres[sucesorT] = nodoT
                     acciones[sucesorT] = acciones[nodoT] + [accion]
                     costos[sucesorT] = costoTotal

@@ -3,6 +3,9 @@ class SudokuProblem:
         self.heuristic = heuristic
         self.startState = startState
         
+    def getInitialState(self):
+        return self.startState
+    
     def isGoalState(self, state):
         for fila in state:
             for elemento in fila:
@@ -18,13 +21,13 @@ class SudokuProblem:
             if not self.isValidState(columna):
                 return False
             
-        for bloque_fila in range(3):
-            for bloque_col in range(3):
+        for bloqueFila in range(3):
+            for bloqueCol in range(3):
                 bloque = []
                 for i in range(3):
                     for j in range(3):
-                        fila = bloque_fila * 3 + i
-                        col = bloque_col * 3 + j
+                        fila = bloqueFila * 3 + i
+                        col = bloqueCol * 3 + j
                         bloque.append(state[fila][col])
                 if not self.isValidState(bloque):
                     return False
@@ -41,11 +44,45 @@ class SudokuProblem:
         return len(set(numeros)) == 9
     
     
-    def getSucessors(self, state):
-        sucessors = []
-        
-        return 0
+    def getSuccessors(self, state):
+        successors = []
 
-    def getCostos(self, actions):
-        # Implement A* pathfinding algorithm here
-        pass
+        minOp = 10
+        target = None
+        options = None
+
+        for i in range(9):
+            for j in range(9):
+                if state[i][j] == 0:
+                    # Valores posibles para esta celda
+                    possible = self.getLegalValues(state, i, j)
+                    if len(possible) < minOp:
+                        minOp = len(possible)
+                        target = (i, j)
+                        options = possible
+
+        if not target:
+            return []  
+
+        i, j = target
+        for value in options:
+            newState = [row[:] for row in state]
+            newState[i][j] = value
+            successors.append((newState, (i, j, value), 1))
+
+        return successors
+
+    def getLegalValues(self, state, row, col):
+        if state[row][col] != 0:
+            return []
+
+        values = set(range(1, 10))
+        values -= set(state[row])
+        values -= {state[i][col] for i in range(9)}
+
+        br, bc = 3 * (row // 3), 3 * (col // 3)
+        for i in range(br, br + 3):
+            for j in range(bc, bc + 3):
+                values.discard(state[i][j])
+
+        return list(values)
