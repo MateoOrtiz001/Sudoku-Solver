@@ -26,3 +26,11 @@ def sudokuHeuristic(state, problem):
     constFactor = totalConst / (emptyCells * 9)
     
     return emptyCells + constFactor
+
+def blankHeuristic(state, problem):
+    emptyCells = 0
+    for i in range(9):
+        for j in range(9):
+            if state[i][j] == 0:
+                emptyCells += 1
+    return emptyCells

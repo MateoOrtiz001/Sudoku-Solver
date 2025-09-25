@@ -1,5 +1,5 @@
 from .astar import aStarSearch
-from .heuristica import sudokuHeuristic
+from .heuristica import sudokuHeuristic, blankHeuristic
 from .astar_instrumentado import aStarSearchInstrumentado
 from .costoUniforme import uniformCostSearch
 from .costoUniforme_instrumentado import uniformCostSearchInstrumentado
