@@ -1,2 +1,3 @@
 from .sudokuClase import SudokuProblem
 from .agentes import aStarSearch, aStarSearchInstrumentado, sudokuHeuristic, uniformCostSearch, uniformCostSearchInstrumentado, blankHeuristic
+from .ui import MainWindow
